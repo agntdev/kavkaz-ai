@@ -1,15 +1,22 @@
 import { Composer } from "grammy";
-import { createBot, type BotContext, type CreateBotOptions } from "./toolkit/index.js";
+import { createBot, resolveSessionStorage, type BotContext, type CreateBotOptions } from "./toolkit/index.js";
 import type { StorageAdapter } from "grammy";
 
 // The per-chat session shape (ephemeral conversation state only). Extend as the
 // bot grows. Durable domain data must NOT live here — use the toolkit's
 // persistent storage (see AGENTS.md).
 export interface Session {
-  // example: step?: "awaiting_amount";
+  flow?: string;
+  flowValue?: string;
 }
 
-export type Ctx = BotContext<Session>;
+export interface DomainStore {
+  read(key: string): Promise<unknown | undefined> | unknown | undefined;
+  write(key: string, value: unknown): Promise<void> | void;
+  delete?(key: string): Promise<void> | void;
+}
+
+export type Ctx = BotContext<Session> & { domainStore?: DomainStore };
 
 /**
  * BuildBotOptions lets a runtime-specific ENTRY POINT (never a feature handler)
@@ -27,6 +34,7 @@ export type Ctx = BotContext<Session>;
 export interface BuildBotOptions {
   handlers?: Composer<Ctx>[];
   storage?: StorageAdapter<Session>;
+  domainStore?: DomainStore;
   telemetryEnv?: CreateBotOptions<Session>["telemetryEnv"];
   telemetryReporterOptions?: CreateBotOptions<Session>["telemetryReporterOptions"];
 }
@@ -43,11 +51,19 @@ export interface BuildBotOptions {
  * build-time manifest because Workers has no filesystem.
  */
 export async function buildBot(token: string, opts: BuildBotOptions = {}) {
+  const storage = opts.storage ?? resolveSessionStorage<Session>(undefined);
   const bot = createBot<Session>(token, {
     initial: () => ({}),
-    storage: opts.storage,
+    storage,
     telemetryEnv: opts.telemetryEnv,
     telemetryReporterOptions: opts.telemetryReporterOptions,
+  });
+
+  // Domain records use the same toolkit-backed durable adapter, but a separate
+  // namespace from grammY's ephemeral session keys.
+  bot.use(async (ctx, next) => {
+    (ctx as Ctx).domainStore = opts.domainStore ?? storage;
+    await next();
   });
 
   const handlers = opts.handlers ?? (await loadHandlersFromDisk());

@@ -1,0 +1,15 @@
+[
+  {
+    "name": "messages stay linked to an opened conversation",
+    "steps": [
+      { "send": { "callback": "menu:chat" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Новый чат открыт. Напишите вопрос или задачу." } }] },
+      { "send": { "text": "Первый вопрос" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Понял вас: «Первый вопрос»\n\nЯ готов помочь разобрать это по шагам." } }] },
+      { "send": { "callback": "menu:history:page:1" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Ваши чаты" } }] },
+      { "send": { "callback": "history:open:c1-1" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Вы: Первый вопрос\n\nАссистент: Понял вас: «Первый вопрос»\n\nЯ готов помочь разобрать это по шагам." } }] },
+      { "send": { "text": "Второй вопрос" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Понял вас: «Второй вопрос»\n\nЯ готов помочь разобрать это по шагам." } }] },
+      { "send": { "callback": "history:rename:c1-1" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Как назвать этот разговор?" } }] },
+      { "send": { "text": "Учёба" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Название обновлено." } }] },
+      { "send": { "callback": "history:delete:c1-1" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Разговор удалён." } }] }
+    ]
+  }
+]

@@ -1,7 +1,7 @@
 import { Composer } from "grammy";
 import type { Ctx } from "../bot.js";
 import { mainReplyKeyboard } from "../toolkit/index.js";
-import { stateOf } from "../state.js";
+import { loadState, saveState } from "../state.js";
 
 // The /start handler renders the bot's MAIN MENU — the primary way users operate
 // a button-first bot. A feature adds its own button by calling
@@ -13,7 +13,8 @@ const composer = new Composer<Ctx>();
 export const WELCOME = "👋 Добро пожаловать! Выберите действие в меню ниже.";
 
 composer.command("start", async (ctx) => {
-  stateOf(ctx);
+  const state = await loadState(ctx);
+  await saveState(ctx, state);
   await ctx.reply(WELCOME, { reply_markup: mainReplyKeyboard() });
 });
 
