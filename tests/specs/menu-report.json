@@ -6,9 +6,7 @@
         "expect": [
           {
             "method": "sendMessage",
-            "payload": {
-              "text": "Open a short report form (multi-step) that notifies admin on submit"
-            }
+            "payload": { "text": "Что случилось? Выберите категорию." }
           }
         ],
         "send": {

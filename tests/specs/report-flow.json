@@ -2,7 +2,7 @@
   {
     "name": "report without configured owner is saved and explained",
     "steps": [
-      { "send": { "callback": "menu:report" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Open a short report form (multi-step) that notifies admin on submit" } }] },
+      { "send": { "callback": "menu:report" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Что случилось? Выберите категорию." } }] },
       { "send": { "callback": "report:category:bug" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Коротко опишите проблему — без личных данных." } }] },
       { "send": { "text": "Не открывается история" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Спасибо, записал сообщение. Владелец ещё не подключил уведомления." } }] }
     ]

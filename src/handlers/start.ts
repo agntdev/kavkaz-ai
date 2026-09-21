@@ -1,6 +1,6 @@
 import { Composer } from "grammy";
 import type { Ctx } from "../bot.js";
-import { mainMenuKeyboard } from "../toolkit/index.js";
+import { mainReplyKeyboard } from "../toolkit/index.js";
 import { stateOf } from "../state.js";
 
 // The /start handler renders the bot's MAIN MENU — the primary way users operate
@@ -10,23 +10,19 @@ import { stateOf } from "../state.js";
 // file to add a feature. Send ONE message — no placeholder line above the menu.
 const composer = new Composer<Ctx>();
 
-const WELCOME = "👋 Welcome! Tap a button below to get started.";
+export const WELCOME = "👋 Добро пожаловать! Выберите действие в меню ниже.";
 
 composer.command("start", async (ctx) => {
   stateOf(ctx);
-  await ctx.reply(WELCOME, { reply_markup: mainMenuKeyboard() });
+  await ctx.reply(WELCOME, { reply_markup: mainReplyKeyboard() });
 });
 
 // "Back to menu" — re-render the main menu in place from any sub-view.
 composer.callbackQuery("menu:main", async (ctx) => {
   await ctx.answerCallbackQuery();
-  try {
-    await ctx.editMessageText(WELCOME, { reply_markup: mainMenuKeyboard() });
-  } catch {
-    // Inline messages can become non-editable (for example after Telegram's
-    // edit window). Always leave the user with a visible way back in.
-    await ctx.reply(WELCOME, { reply_markup: mainMenuKeyboard() });
-  }
+  // Reply keyboards belong to a new message; Telegram cannot attach one while
+  // editing an inline-keyboard message.
+  await ctx.reply(WELCOME, { reply_markup: mainReplyKeyboard() });
 });
 
 export default composer;

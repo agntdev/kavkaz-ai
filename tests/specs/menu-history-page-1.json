@@ -7,7 +7,7 @@
           {
             "method": "sendMessage",
             "payload": {
-              "text": "List recent conversations (paged, 10 per page) with actions"
+              "text": "Пока нет сохранённых чатов — нажмите «Новый чат», чтобы начать."
             }
           }
         ],

@@ -74,10 +74,9 @@ export function now(): number {
 }
 
 export function menuBack() {
-  return { inline_keyboard: [[{ text: "⬅️ Back to menu", callback_data: "menu:main" }]] };
+  return { inline_keyboard: [[{ text: "В главное меню", callback_data: "menu:main" }]] };
 }
 
 export function activeConversation(state: AppState): StoredConversation | undefined {
   return state.conversations.find((c) => c.id === state.activeConversationId && !c.deleted);
 }
-

@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Russian home menu routes every phone button",
+    "steps": [
+      { "send": { "text": "Новый чат" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Новый чат открыт. Напишите вопрос или задачу." } }] },
+      { "send": { "text": "Мои чаты" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Ваши чаты" } }] },
+      { "send": { "text": "Изображения" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Раздел изображений пока пуст. Здесь появятся ваши изображения." } }] },
+      { "send": { "text": "Файлы" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Файлов пока нет. Отправьте файл в чат, чтобы сохранить его здесь." } }] },
+      { "send": { "text": "Поиск" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Напишите слово или фразу для поиска по вашим чатам." } }] },
+      { "send": { "text": "Голос" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Голосовой ввод пока недоступен. Напишите сообщение текстом." } }] },
+      { "send": { "text": "Профиль" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Ваш профиль\n\nИмя: Test\nЯзык: RU\nЧасовой пояс: UTC\nСообщений в этом месяце: 0" } }] },
+      { "send": { "text": "Тариф" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Сейчас доступен бесплатный тариф без ограничений по функциям." } }] }
+    ]
+  }
+]

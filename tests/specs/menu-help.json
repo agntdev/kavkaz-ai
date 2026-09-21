@@ -5,10 +5,8 @@
       {
         "expect": [
           {
-            "method": "sendMessage",
-            "payload": {
-              "text": "Show canned help text and usage tips"
-            }
+            "method": "editMessageText",
+            "payload": { "text": "ℹ️ Выберите действие в меню: новый чат, история, профиль или настройки.\n\nЧтобы вернуться на главный экран, нажмите /start." }
           }
         ],
         "send": {

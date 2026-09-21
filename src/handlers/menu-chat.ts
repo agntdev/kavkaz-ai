@@ -4,14 +4,14 @@ import { inlineButton, inlineKeyboard, registerMainMenuItem } from "../toolkit/i
 import { activeConversation, now, stateOf, type StoredConversation } from "../state.js";
 import { sendConversationExport } from "../exporter.js";
 
-registerMainMenuItem({ label: "💬 Chat", data: "menu:chat", order: 10 });
+registerMainMenuItem({ label: "Новый чат", data: "menu:chat", order: 10 });
 const composer = new Composer<Ctx>();
 const chatKeyboard = inlineKeyboard([
-  [inlineButton("💾 Save last reply", "chat:save:last"), inlineButton("📄 Export", "chat:export")],
-  [inlineButton("⬅️ Back to menu", "menu:main")],
+  [inlineButton("Сохранить ответ", "chat:save:last"), inlineButton("Экспорт", "chat:export")],
+  [inlineButton("В главное меню", "menu:main")],
 ]);
 
-function openConversation(ctx: Ctx) {
+export function openConversation(ctx: Ctx) {
   const state = stateOf(ctx);
   let conversation = activeConversation(state);
   if (!conversation) {
@@ -32,7 +32,12 @@ function openConversation(ctx: Ctx) {
 composer.callbackQuery("menu:chat", async (ctx) => {
   await ctx.answerCallbackQuery();
   openConversation(ctx);
-  await ctx.reply("Open or continue the active conversation (start new if none)", { reply_markup: chatKeyboard });
+  await ctx.reply("Новый чат открыт. Напишите вопрос или задачу.", { reply_markup: chatKeyboard });
+});
+
+composer.hears("Новый чат", async (ctx) => {
+  await ctx.reply("Новый чат открыт. Напишите вопрос или задачу.", { reply_markup: chatKeyboard });
+  openConversation(ctx);
 });
 
 composer.callbackQuery("chat:save:last", async (ctx) => {
@@ -48,7 +53,8 @@ composer.callbackQuery("chat:export", async (ctx) => { await ctx.answerCallbackQ
 
 composer.on("message:text", async (ctx, next) => {
   const state = stateOf(ctx);
-  if (ctx.message.text.startsWith("/") || state.flow !== "chat") return next();
+  const menuLabels = new Set(["Новый чат", "Мои чаты", "Изображения", "Файлы", "Поиск", "Голос", "Профиль", "Тариф"]);
+  if (ctx.message.text.startsWith("/") || state.flow !== "chat" || menuLabels.has(ctx.message.text)) return next();
   const input = ctx.message.text.trim();
   if (!input) return ctx.reply("Напишите вопрос или задачу одним сообщением.", { reply_markup: chatKeyboard });
   if (input.length > 4000) return ctx.reply("Сообщение слишком длинное. Сократите его до 4000 символов и попробуйте снова.");

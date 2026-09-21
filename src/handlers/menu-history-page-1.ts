@@ -4,7 +4,7 @@ import { inlineButton, inlineKeyboard, registerMainMenuItem } from "../toolkit/i
 import { stateOf } from "../state.js";
 import { sendConversationExport } from "../exporter.js";
 
-registerMainMenuItem({ label: "🗂 History", data: "menu:history:page:1", order: 20 });
+registerMainMenuItem({ label: "Мои чаты", data: "menu:history:page:1", order: 20 });
 const composer = new Composer<Ctx>();
 
 async function render(ctx: Ctx, page: number) {
@@ -12,18 +12,18 @@ async function render(ctx: Ctx, page: number) {
   const items = state.conversations.filter((c) => !c.deleted).sort((a, b) => b.lastActivityAt - a.lastActivityAt);
   const start = Math.max(0, page - 1) * 10;
   const shown = items.slice(start, start + 10);
-  const text = "List recent conversations (paged, 10 per page) with actions";
+  const text = shown.length ? "Ваши чаты" : "Пока нет сохранённых чатов — нажмите «Новый чат», чтобы начать.";
   const rows = shown.flatMap((c) => [[inlineButton(`Открыть ${c.title}`, `history:open:${c.id}`)], [inlineButton("Переименовать", `history:rename:${c.id}`), inlineButton("Удалить", `history:delete:${c.id}`), inlineButton("Экспорт", `history:export:${c.id}`)]]);
   const controls = [] as ReturnType<typeof inlineButton>[];
   if (page > 1) controls.push(inlineButton("⬅️ Назад", `history:page:${page - 1}`));
   if (start + 10 < items.length) controls.push(inlineButton("Вперёд ➡️", `history:page:${page + 1}`));
   if (controls.length) rows.push(controls);
-  rows.push([inlineButton("⬅️ Back to menu", "menu:main")]);
+  rows.push([inlineButton("В главное меню", "menu:main")]);
   await ctx.reply(text, { reply_markup: inlineKeyboard(rows) });
-  if (shown.length === 0) await ctx.reply("История пока пуста — откройте Chat, чтобы начать разговор.");
 }
 
 composer.callbackQuery("menu:history:page:1", async (ctx) => { await ctx.answerCallbackQuery(); await render(ctx, 1); });
+composer.hears("Мои чаты", async (ctx) => { await render(ctx, 1); });
 composer.callbackQuery(/^history:page:(\d+)$/, async (ctx) => { await ctx.answerCallbackQuery(); await render(ctx, Number(ctx.match[1])); });
 composer.callbackQuery(/^history:open:(.+)$/, async (ctx) => {
   await ctx.answerCallbackQuery();

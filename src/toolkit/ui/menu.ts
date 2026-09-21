@@ -13,7 +13,9 @@
 import {
   inlineButton,
   inlineKeyboard,
+  replyKeyboard,
   type InlineKeyboardMarkup,
+  type ReplyKeyboardMarkup,
 } from "./keyboard.js";
 
 /** One top-level main-menu button. */
@@ -60,6 +62,19 @@ export function mainMenuKeyboard(columns = 2): InlineKeyboardMarkup {
   }
   rows.push([inlineButton("❓ Help", "menu:help")]);
   return inlineKeyboard(rows);
+}
+
+/** The phone-first Russian home menu requested by the product owner. */
+export function mainReplyKeyboard(): ReplyKeyboardMarkup {
+  return replyKeyboard(
+    [
+      ["Новый чат", "Мои чаты"],
+      ["Изображения", "Файлы"],
+      ["Поиск", "Голос"],
+      ["Профиль", "Тариф"],
+    ],
+    { resize_keyboard: true, one_time_keyboard: false, input_field_placeholder: "Выберите действие" },
+  );
 }
 
 /** Clear the registry. Test-only hook; never call from bot code. */
