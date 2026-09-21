@@ -69,7 +69,7 @@ export async function buildBot(token: string, opts: BuildBotOptions = {}) {
   const handlers = opts.handlers ?? (await loadHandlersFromDisk());
   for (const h of handlers) bot.use(h);
 
-  bot.on("message", (ctx) => ctx.reply("Sorry, I didn't understand that. Try /help."));
+  bot.on("message", (ctx) => ctx.reply("Откройте /start, чтобы выбрать действие."));
 
   return bot;
 }
