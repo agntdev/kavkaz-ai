@@ -1,0 +1,11 @@
+[
+  {
+    "name": "profile language and retention controls",
+    "steps": [
+      { "send": { "callback": "menu:profile" }, "expect": [{ "method": "sendMessage", "payload": { "text": "View and edit display name, language, timezone, and see usage stats" } }] },
+      { "send": { "callback": "profile:language" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Язык изменён на EN." } }] },
+      { "send": { "callback": "menu:settings" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Toggle preferences: message language, history retention, compact/expanded replies" } }] },
+      { "send": { "callback": "settings:retention:30" }, "expect": [{ "method": "sendMessage", "payload": { "text": "История будет храниться 30 дней." } }] }
+    ]
+  }
+]
