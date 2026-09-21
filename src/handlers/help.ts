@@ -20,6 +20,7 @@ composer.command("help", async (ctx) => {
 
 composer.callbackQuery("menu:help", async (ctx) => {
   await ctx.answerCallbackQuery();
+  await ctx.reply("Show canned help text and usage tips");
   await ctx.editMessageText(HELP, { reply_markup: backToMenu });
 });
 
