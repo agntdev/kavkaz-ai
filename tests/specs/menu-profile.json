@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Profile",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "View and edit display name, language, timezone, and see usage stats"
+            }
+          }
+        ],
+        "send": {
+          "callback": "menu:profile"
+        }
+      }
+    ]
+  }
+]
