@@ -57,9 +57,20 @@ export function createBot<S extends object>(
   // injected BOT_TELEMETRY_* at deploy — so dev, the test harness, and old bots
   // are byte-for-byte unchanged. Records salted user hashes only; best-effort.
   installActivityReporter(bot, opts.telemetryEnv, opts.telemetryReporterOptions);
-  bot.catch((err) => {
+  bot.catch(async (err) => {
     if (opts.onError) opts.onError(err);
     else console.error("[agntdev-bot] unhandled error:", err);
+
+    // A handler failure must never leave the user staring at a silent update.
+    // Keep the detailed error in the server log, but expose only a short,
+    // actionable message in the chat. Reply failures are intentionally ignored:
+    // Telegram may have rejected the original update (for example, an old
+    // callback message), and there is no safe second recovery path.
+    try {
+      await err.ctx.reply("Что-то пошло не так. Попробуйте ещё раз или откройте /start.");
+    } catch {
+      // The Telegram API error is already represented by the original failure.
+    }
   });
   return bot;
 }
