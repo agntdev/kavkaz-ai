@@ -7,7 +7,7 @@
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Open or continue the active conversation (start new if none)"
+              "text": "Новый чат открыт. Напишите вопрос или задачу."
             }
           }
         ],

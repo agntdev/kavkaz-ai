@@ -26,6 +26,28 @@ export interface InlineKeyboardMarkup {
   inline_keyboard: InlineButton[][];
 }
 
+/** Telegram reply keyboard markup for persistent, text-based menu buttons. */
+export interface ReplyKeyboardMarkup {
+  keyboard: Array<Array<{ text: string }>>;
+  resize_keyboard?: boolean;
+  one_time_keyboard?: boolean;
+  input_field_placeholder?: string;
+}
+
+export function replyKeyboard(
+  rows: ReadonlyArray<ReadonlyArray<string>>,
+  options: Pick<ReplyKeyboardMarkup, "resize_keyboard" | "one_time_keyboard" | "input_field_placeholder"> = {},
+): ReplyKeyboardMarkup {
+  return {
+    keyboard: rows.map((row) => row.map((text) => ({ text }))),
+    resize_keyboard: options.resize_keyboard ?? true,
+    one_time_keyboard: options.one_time_keyboard ?? false,
+    ...(options.input_field_placeholder
+      ? { input_field_placeholder: options.input_field_placeholder }
+      : {}),
+  };
+}
+
 /** A callback button: tapping it sends `callbackData` back to the bot. */
 export function inlineButton(text: string, callbackData: string): CallbackButton {
   return { text, callback_data: callbackData };

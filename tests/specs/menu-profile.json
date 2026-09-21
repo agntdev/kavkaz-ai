@@ -7,7 +7,7 @@
           {
             "method": "sendMessage",
             "payload": {
-              "text": "View and edit display name, language, timezone, and see usage stats"
+              "text": "Ваш профиль\n\nИмя: Test\nЯзык: RU\nЧасовой пояс: UTC\nСообщений в этом месяце: 0"
             }
           }
         ],

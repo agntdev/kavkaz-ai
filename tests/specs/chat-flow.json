@@ -2,7 +2,7 @@
   {
     "name": "chat records both sides and replies",
     "steps": [
-      { "send": { "callback": "menu:chat" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Open or continue the active conversation (start new if none)" } }] },
+      { "send": { "callback": "menu:chat" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Новый чат открыт. Напишите вопрос или задачу." } }] },
       { "send": { "text": "Помоги составить план" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Понял вас: «Помоги составить план»\n\nЯ готов помочь разобрать это по шагам." } }] }
     ]
   }

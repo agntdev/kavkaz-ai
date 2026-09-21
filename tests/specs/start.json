@@ -7,7 +7,7 @@
         "expect": [
           {
             "method": "sendMessage",
-            "payload": { "text": "👋 Welcome! Tap a button below to get started." }
+            "payload": { "text": "👋 Добро пожаловать! Выберите действие в меню ниже.", "reply_markup": { "keyboard": [[{ "text": "Новый чат" }, { "text": "Мои чаты" }], [{ "text": "Изображения" }, { "text": "Файлы" }], [{ "text": "Поиск" }, { "text": "Голос" }], [{ "text": "Профиль" }, { "text": "Тариф" }]], "resize_keyboard": true, "one_time_keyboard": false, "input_field_placeholder": "Выберите действие" } }
           }
         ]
       }
@@ -20,8 +20,8 @@
         "send": { "callback": "menu:main" },
         "expect": [
           {
-            "method": "editMessageText",
-            "payload": { "text": "👋 Welcome! Tap a button below to get started." }
+            "method": "sendMessage",
+            "payload": { "text": "👋 Добро пожаловать! Выберите действие в меню ниже.", "reply_markup": { "keyboard": [[{ "text": "Новый чат" }, { "text": "Мои чаты" }], [{ "text": "Изображения" }, { "text": "Файлы" }], [{ "text": "Поиск" }, { "text": "Голос" }], [{ "text": "Профиль" }, { "text": "Тариф" }]], "resize_keyboard": true, "one_time_keyboard": false, "input_field_placeholder": "Выберите действие" } }
           }
         ]
       }

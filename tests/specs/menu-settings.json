@@ -7,7 +7,7 @@
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Toggle preferences: message language, history retention, compact/expanded replies"
+              "text": "Настройки\n\nХранить историю: 90 дней\nКороткие ответы: выключены"
             }
           }
         ],
