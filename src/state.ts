@@ -120,3 +120,27 @@ export function buildModelInput(conversation: StoredConversation, retentionDays:
     .map((message) => `${message.senderType}: ${message.content}`)
     .join("\n");
 }
+
+export interface ModelMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
+/**
+ * Return the bounded, retention-aware history in the role format expected by
+ * OpenAI-compatible chat APIs. The caller adds the system prompt because it
+ * is application policy rather than conversation data.
+ */
+export function buildModelMessages(
+  conversation: StoredConversation,
+  retentionDays: number,
+): ModelMessage[] {
+  const cutoff = now() - retentionDays * 86400000;
+  return conversation.messages
+    .filter((message) => message.timestamp >= cutoff)
+    .slice(-20)
+    .filter((message): message is StoredMessage & { senderType: "user" | "assistant" } =>
+      message.senderType === "user" || message.senderType === "assistant",
+    )
+    .map((message) => ({ role: message.senderType, content: message.content }));
+}
